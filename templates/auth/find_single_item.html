@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Find Single Item</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ url_for('auth.find_single_item') }}">
+    <label for="itemID">Enter Item ID:</label>
+    <input type="text" name="itemID" id="itemID" required>
+    <input type="submit" value="Find Item">
+</form>
+
+{% if locations %}
+<h2>Item Locations</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Piece Number</th>
+            <th>Room Number</th>
+            <th>Shelf Number</th>
+            <th>Shelf Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for location in locations %}
+        <tr>
+            <td>{{ location.pieceNum }}</td>
+            <td>{{ location.roomNum }}</td>
+            <td>{{ location.shelfNum }}</td>
+            <td>{{ location.shelfDescription }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>My Orders</h1>
+{% endblock %}
+
+{% block content %}
+{% if role == '3' %}
+    <h2>Your Orders (Client)</h2>
+    {% if orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Order Notes</th>
+                    <th>Item ID</th>
+                    <th>Item Description</th>
+                    <th>Found</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.orderID }}</td>
+                    <td>{{ order.orderDate }}</td>
+                    <td>{{ order.orderNotes }}</td>
+                    <td>{{ order.ItemID }}</td>
+                    <td>{{ order.iDescription }}</td>
+                    <td>{{ 'Yes' if order.found else 'No' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+{% elif role == '1' %}
+    <h2>Your Managed Orders (Staff)</h2>
+    {% if orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Order Notes</th>
+                    <th>Deliverer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.orderID }}</td>
+                    <td>{{ order.orderDate }}</td>
+                    <td>{{ order.orderNotes }}</td>
+                    <td>{{ order.deliverer if order.deliverer else 'Not assigned' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+{% elif role == '2' %}
+    <h2>Your Delivery Orders (Volunteer)</h2>
+    {% if orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Order Notes</th>
+                    <th>Delivery Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.orderID }}</td>
+                    <td>{{ order.orderDate }}</td>
+                    <td>{{ order.orderNotes }}</td>
+                    <td>{{ order.deliveryDate }}</td>
+                    <td>{{ order.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

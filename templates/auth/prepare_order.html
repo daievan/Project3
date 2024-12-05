@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Prepare Order</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ url_for('auth.prepare_order') }}">
+    <label for="search_type">Search By:</label>
+    <select name="search_type" id="search_type" required>
+        <option value="order_number">Order Number</option>
+        <option value="client_username">Client Username</option>
+    </select>
+
+    <label for="search_value">Search Value:</label>
+    <input type="text" name="search_value" id="search_value" required>
+
+    <input type="submit" value="Prepare Order">
+</form>
+
+{% if items %}
+<h2>Order Items</h2>
+<table>
+    <tr>
+        <th>Item ID</th>
+        <th>Description</th>
+        <th>Room Number</th>
+        <th>Shelf Number</th>
+        <th>Notes</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.ItemID }}</td>
+        <td>{{ item.iDescription }}</td>
+        <td>{{ item.roomNum }}</td>
+        <td>{{ item.shelfNum }}</td>
+        <td>{{ item.pNotes }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+{% endblock %}

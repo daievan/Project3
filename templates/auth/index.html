@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Welcome to the System</h1>
+{% endblock %}
+
+{% block content %}
+<div>
+    <ul>
+        <li><a href="{{ url_for('auth.accept_donation') }}">Accept Donation</a></li>
+        <li><a href="{{ url_for('auth.find_single_item') }}">Find Single Item</a></li>
+        <li><a href="{{ url_for('auth.find_order_items') }}">Find Order Items</a></li>
+        <li><a href="{{ url_for('auth.start_order') }}">Start an Order</a></li>
+        <li><a href="{{ url_for('auth.add_to_order') }}">Add to Current Order</a></li>
+        <li><a href="{{ url_for('auth.prepare_order') }}">Prepare Order</a></li>
+        <li><a href="{{ url_for('auth.my_orders') }}">My Orders</a></li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Accept Donation</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ url_for('auth.accept_donation') }}">
+    <label for="donor_id">Donor ID:</label>
+    <input type="text" name="donor_id" id="donor_id" required>
+
+    <label for="mainCategory">Main Category:</label>
+    <select name="mainCategory" id="mainCategory" onchange="fetchSubCategories()" required>
+        <option value="" disabled selected>Select a main category</option>
+        {% for category in main_categories %}
+        <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="subCategory">Sub Category:</label>
+    <select name="subCategory" id="subCategory" required>
+        <option value="" disabled selected>Select a sub category</option>
+    </select>
+
+    <label for="item_description">Item Description:</label>
+    <input type="text" name="item_description" id="item_description" required>
+
+    <label for="photo_filename">Photo Filename:</label>
+    <input type="text" name="photo_filename" id="photo_filename" required>
+
+    <label for="material">Material:</label>
+    <input type="text" name="material" id="material" required>
+
+    <label for="color">Color:</label>
+    <input type="text" name="color" id="color" required>
+
+    <label for="is_new">Is New:</label>
+    <select name="is_new" id="is_new">
+        <option value="1">Yes</option>
+        <option value="0" selected>No</option>
+    </select>
+
+    <label for="has_pieces">Has Pieces:</label>
+    <select name="has_pieces" id="has_pieces" onchange="updatePieceFields()">
+        <option value="0" selected>No</option>
+        <option value="1">Yes</option>
+    </select>
+
+    <div id="piece_fields">
+        <!-- Default single piece -->
+        <div class="piece" data-piece-index="1">
+            <h3>Piece 1</h3>
+            <input type="hidden" name="piece_count" id="piece_count" value="1">
+            <label for="piece_1_description">Description:</label>
+            <input type="text" name="piece_1_description" id="piece_1_description" required>
+
+            <label for="piece_1_room_num">Room Number:</label>
+            <input type="number" name="piece_1_room_num" id="piece_1_room_num" required>
+
+            <label for="piece_1_shelf_num">Shelf Number:</label>
+            <input type="number" name="piece_1_shelf_num" id="piece_1_shelf_num" required>
+
+            <label for="piece_1_length">Length:</label>
+            <input type="number" name="piece_1_length" id="piece_1_length" required>
+
+            <label for="piece_1_width">Width:</label>
+            <input type="number" name="piece_1_width" id="piece_1_width" required>
+
+            <label for="piece_1_height">Height:</label>
+            <input type="number" name="piece_1_height" id="piece_1_height" required>
+
+            <label for="piece_1_notes">Notes:</label>
+            <input type="text" name="piece_1_notes" id="piece_1_notes">
+        </div>
+    </div>
+
+    <button type="button" id="add_piece_btn" onclick="addPiece()" disabled>Add Piece</button>
+
+    <label for="donation_date">Donation Date:</label>
+    <input type="date" name="donation_date" id="donation_date" required>
+
+    <input type="submit" value="Submit Donation">
+</form>
+
+<script>
+    let pieceCount = 1;
+
+    function fetchSubCategories() {
+        const mainCategory = document.getElementById('mainCategory').value;
+        fetch(`/auth/get_subcategories/${mainCategory}`)
+            .then(response => response.json())
+            .then(data => {
+                const subCategorySelect = document.getElementById('subCategory');
+                subCategorySelect.innerHTML = ''; // Clear existing options
+                subCategorySelect.insertAdjacentHTML('beforeend', '<option value="" disabled selected>Select a sub category</option>');
+                data.forEach(subCategory => {
+                    const option = document.createElement('option');
+                    option.value = subCategory;
+                    option.textContent = subCategory;
+                    subCategorySelect.appendChild(option);
+                });
+            });
+    }
+
+    function updatePieceFields() {
+        const hasPieces = document.getElementById('has_pieces').value;
+        const addPieceBtn = document.getElementById('add_piece_btn');
+
+        if (hasPieces === "1") {
+            addPieceBtn.disabled = false; // Enable "Add Piece" button
+        } else {
+            addPieceBtn.disabled = true; // Disable "Add Piece" button
+            resetPiecesToSingle(); // Reset to single piece if "No" is selected
+        }
+    }
+
+    function resetPiecesToSingle() {
+        const pieceFields = document.getElementById('piece_fields');
+        pieceFields.innerHTML = ''; // Clear all pieces
+        pieceCount = 0; // Reset count
+        document.getElementById('piece_count').value = pieceCount;
+        addPiece(); // Add a single default piece
+    }
+
+    function addPiece() {
+        pieceCount++;
+        const pieceFields = document.getElementById('piece_fields');
+        document.getElementById('piece_count').value = pieceCount;
+        const pieceHTML = `
+            <div class="piece" data-piece-index="${pieceCount}">
+                <h3>Piece ${pieceCount}</h3>
+                <label for="piece_${pieceCount}_description">Description:</label>
+                <input type="text" name="piece_${pieceCount}_description" id="piece_${pieceCount}_description" required>
+
+                <label for="piece_${pieceCount}_room_num">Room Number:</label>
+                <input type="number" name="piece_${pieceCount}_room_num" id="piece_${pieceCount}_room_num" required>
+
+                <label for="piece_${pieceCount}_shelf_num">Shelf Number:</label>
+                <input type="number" name="piece_${pieceCount}_shelf_num" id="piece_${pieceCount}_shelf_num" required>
+
+                <label for="piece_${pieceCount}_length">Length:</label>
+                <input type="number" name="piece_${pieceCount}_length" id="piece_${pieceCount}_length" required>
+
+                <label for="piece_${pieceCount}_width">Width:</label>
+                <input type="number" name="piece_${pieceCount}_width" id="piece_${pieceCount}_width" required>
+
+                <label for="piece_${pieceCount}_height">Height:</label>
+                <input type="number" name="piece_${pieceCount}_height" id="piece_${pieceCount}_height" required>
+
+                <label for="piece_${pieceCount}_notes">Notes:</label>
+                <input type="text" name="piece_${pieceCount}_notes" id="piece_${pieceCount}_notes">
+            </div>`;
+        pieceFields.insertAdjacentHTML('beforeend', pieceHTML);
+    }
+
+    // Initialize the form with one default piece
+    // resetPiecesToSingle();
+</script>
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+{% endblock %}

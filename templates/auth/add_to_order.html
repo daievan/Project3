@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Add to Order</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ url_for('auth.add_to_order') }}">
+    <label for="mainCategory">Main Category:</label>
+    <select name="mainCategory" id="mainCategory" onchange="fetchSubCategories()" required>
+        <option value="" disabled selected>Select a main category</option>
+        {% for category in main_categories %}
+        <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="subCategory">Sub Category:</label>
+    <select name="subCategory" id="subCategory" onchange="fetchItems()" required>
+        <option value="" disabled selected>Select a sub category</option>
+    </select>
+
+    <label for="item_id">Available Items:</label>
+    <select name="item_id" id="item_id" required>
+        <option value="" disabled selected>Select an item</option>
+    </select>
+
+    <input type="submit" value="Add to Order">
+</form>
+
+<script>
+    function fetchSubCategories() {
+        const mainCategory = document.getElementById('mainCategory').value;
+        const subCategorySelect = document.getElementById('subCategory');
+
+        subCategorySelect.innerHTML = '<option value="" disabled selected>Loading...</option>';
+        fetch(`/auth/get_subcategories/${mainCategory}`)
+            .then(response => response.json())
+            .then(data => {
+                subCategorySelect.innerHTML = '<option value="" disabled selected>Select a sub category</option>';
+                data.forEach(subCategory => {
+                    const option = document.createElement('option');
+                    option.value = subCategory;
+                    option.textContent = subCategory;
+                    subCategorySelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching subcategories:', error);
+            });
+    }
+
+    function fetchItems() {
+        const mainCategory = document.getElementById('mainCategory').value;
+        const subCategory = document.getElementById('subCategory').value;
+        const itemSelect = document.getElementById('item_id');
+
+        itemSelect.innerHTML = '<option value="" disabled selected>Loading...</option>';
+        fetch(`/auth/get_items/${mainCategory}/${subCategory}`)
+            .then(response => response.json())
+            .then(data => {
+                itemSelect.innerHTML = '<option value="" disabled selected>Select an item</option>';
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.ItemID;
+                    option.textContent = `${item.iDescription} - ${item.material} (${item.color})`;
+                    itemSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching items:', error);
+            });
+    }
+</script>
+{% endblock %}

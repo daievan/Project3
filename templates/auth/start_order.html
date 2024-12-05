@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Start an Order</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ url_for('auth.start_order') }}">
+    <label for="client_username">Client Username:</label>
+    <input type="text" name="client_username" id="client_username" required>
+    
+    <label for="order_notes">Order Notes:</label>
+    <textarea name="order_notes" id="order_notes"></textarea>
+    
+    <input type="submit" value="Start Order">
+</form>
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+{% endblock %}

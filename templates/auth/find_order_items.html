@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Find Order Items</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ url_for('auth.find_order_items') }}">
+    <label for="orderID">Enter Order ID:</label>
+    <input type="text" name="orderID" id="orderID" required>
+    <input type="submit" value="Find Items">
+</form>
+
+{% if items_with_locations %}
+<h2>Order Items and Locations</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Item ID</th>
+            <th>Item Description</th>
+            <th>Piece Number</th>
+            <th>Room Number</th>
+            <th>Shelf Number</th>
+            <th>Shelf Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items_with_locations %}
+        <tr>
+            <td>{{ item.ItemID }}</td>
+            <td>{{ item.itemDescription }}</td>
+            <td>{{ item.pieceNum }}</td>
+            <td>{{ item.roomNum }}</td>
+            <td>{{ item.shelfNum }}</td>
+            <td>{{ item.shelfDescription }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+{% endblock %}

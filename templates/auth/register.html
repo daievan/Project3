@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <!-- Username -->
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+
+    <!-- Password -->
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+
+    <!-- First Name -->
+    <label for="first_name">First Name</label>
+    <input name="first_name" id="first_name" required>
+
+    <!-- Last Name -->
+    <label for="last_name">Last Name</label>
+    <input name="last_name" id="last_name" required>
+
+    <!-- Email -->
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required>
+
+    <!-- Phone Number -->
+    <label for="phone">Phone Number</label>
+    <input type="tel" name="phone" id="phone" required>
+
+    <!-- Role -->
+    <label for="role">Role</label>
+    <select name="role" id="role" required>
+      {% for role in roles %}
+      <option value="{{ role['roleID'] }}">{{ role['rDescription'] }}</option>
+      {% endfor %}
+    </select>
+
+    <!-- Submit Button -->
+    <input type="submit" value="Register">
+  </form>
+{% endblock %}
