@@ -464,6 +464,8 @@ def create_auth_blueprint(login_manager: LoginManager):
         user_role = current_user.role
         user_name = current_user.username
         orders = []
+        supervise_orders = []
+        deliver_orders = []
 
         if user_role == '3':  # Client
             cursor.execute(
@@ -479,16 +481,28 @@ def create_auth_blueprint(login_manager: LoginManager):
             orders = cursor.fetchall()
 
         elif user_role == '1':  # Staff
+            # Orders the user supervises
             cursor.execute(
                 """
-                SELECT o.orderID, o.orderDate, o.orderNotes, d.userName AS deliverer
+                SELECT o.orderID, o.orderDate, o.orderNotes
                 FROM Ordered o
-                LEFT JOIN Delivered d ON o.orderID = d.orderID
                 WHERE o.supervisor = %s
                 """, 
                 (user_name,)
             )
-            orders = cursor.fetchall()
+            supervise_orders = cursor.fetchall()
+
+            # Orders the user delivers
+            cursor.execute(
+                """
+                SELECT o.orderID, o.orderDate, o.orderNotes
+                FROM Ordered o
+                JOIN Delivered d ON o.orderID = d.orderID
+                WHERE d.userName = %s
+                """, 
+                (user_name,)
+            )
+            deliver_orders = cursor.fetchall()
 
         elif user_role == '2':  # Volunteer
             cursor.execute(
@@ -502,5 +516,11 @@ def create_auth_blueprint(login_manager: LoginManager):
             )
             orders = cursor.fetchall()
 
-        return render_template('auth/my_orders.html', orders=orders, role=user_role)
+        return render_template(
+            'auth/my_orders.html',
+            orders=orders,
+            supervise_orders=supervise_orders,
+            deliver_orders=deliver_orders,
+            role=user_role
+        )
     return bp
