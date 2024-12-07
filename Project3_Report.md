@@ -221,6 +221,47 @@ FROM Delivered d
 JOIN Ordered o ON d.orderID = o.orderID
 WHERE d.userName = %s;
 ```
+### 9b.
+
+**Insert or Update Popularity Count**
+
+```sql
+INSERT INTO Popularity (category, subcategory, order_count)
+VALUES (%s, %s, 1)
+ON DUPLICATE KEY UPDATE
+order_count = order_count + 1;
+```
+
+#### 10.volunteer
+
+#### 1. Staff
+
+**Fetch Orders Supervised by Staff**
+
+```sql
+SELECT o.orderID, o.orderDate, o.orderNotes, d.date AS deliveryDate, d.status
+FROM Delivered d
+JOIN Ordered o ON d.orderID = o.orderID
+WHERE d.userName = %s;
+```
+
+#### 2. Volunteers
+
+**Fetch Orders Assigned to Volunteers**
+```sql
+SELECT o.orderID, o.orderDate, o.orderNotes, d.date AS deliveryDate, d.status
+FROM Delivered d
+JOIN Ordered o ON d.orderID = o.orderID
+WHERE d.userName = %s;
+```
+
+**Update Delivery Status**
+
+```sql
+UPDATE Delivered
+SET status = %s
+WHERE orderID = %s;
+```
 
 ## 3.**Lessons Learned from the Project**
 
@@ -230,7 +271,10 @@ In this project, I learned the importance of establishing a foundational framewo
 
 When encountering issues during code execution, I utilized breakpoints at different locations in the code to systematically debug and identify the problems. This iterative process of debugging and refining helped me improve the quality and reliability of the project.
 
-
+**Jarred Carter**
+This project has reinforced the importance of planning and organization in software development, especially when working with a database. By creating a detailed project plan and breaking down the project into smaller tasks with my partner, I was able to manage the project’s complexity and ensure that all requirements were met.
+My debugging skills were put to the test during this process, and I believe that I have made a noticeable improvement compared to previous projects, such as a very similar project I completed for a state government agency a few years ago. My understanding of role management in Flask, handling interactions between two different
+frameworks (Flask and MySQL), and code structuring abilities have improved significantly, and I am confident that I can apply these skills to future projects.
 
 ## 4.**Contribution of Team Members**
 
@@ -240,3 +284,8 @@ When encountering issues during code execution, I utilized breakpoints at differ
 
 ​	•	**Additional Features**: Worked on features 5–8.
 
+**Jarred Carter:**
+
+​	•	**Required Application Features**: Worked on features 1–4 before handing off to Dai for refactoring, restructuring, and editing.
+
+​	•	**Additional Features**: Worked on features 9b and 10.
