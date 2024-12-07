@@ -11,10 +11,10 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
     )
     app.config['MYSQL_HOST'] = 'localhost'
-    app.config['MYSQL_PORT'] = 8889
+    app.config['MYSQL_PORT'] = 3306
     app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = 'root'
-    app.config['MYSQL_DB'] = 'Project3'
+    app.config['MYSQL_PASSWORD'] = 'casper01'
+    app.config['MYSQL_DB'] = 'WelcomeHome'
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)

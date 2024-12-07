@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS PersonPhone;
 DROP TABLE IF EXISTS Person;
 DROP TABLE IF EXISTS Item;
 DROP TABLE IF EXISTS Category;
+DROP TABLE IF EXISTS Popularity;
 
 CREATE TABLE Category (
     mainCategory VARCHAR(50) NOT NULL,
@@ -122,6 +123,13 @@ CREATE TABLE Delivered (
     PRIMARY KEY (userName, orderID),
     FOREIGN KEY (userName) REFERENCES Person(userName),
     FOREIGN KEY (orderID) REFERENCES Ordered(orderID)
+);
+
+CREATE TABLE Popularity (
+    category VARCHAR(255) NOT NULL,
+    subcategory VARCHAR(255) NOT NULL,
+    order_count INTEGER DEFAULT 0,
+    PRIMARY KEY (category, subcategory)
 );
 
 INSERT INTO Role (roleID, rDescription) VALUES ('1', 'Staff');

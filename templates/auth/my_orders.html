@@ -76,6 +76,17 @@
                     <td>{{ order.orderID }}</td>
                     <td>{{ order.orderDate }}</td>
                     <td>{{ order.orderNotes }}</td>
+                    <td>
+                        <!-- Include the status update form -->
+                        <form method="post" action="{{ url_for('auth.update_order_status', order_id=order.orderID) }}">
+                            <select name="status">
+                                <option value="Preparing" {% if order.status == 'Preparing' %}selected{% endif %}>Preparing</option>
+                                <option value="Out for Delivery" {% if order.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
+                                <option value="Completed" {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                            </select>
+                            <button type="submit">Update Status</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -104,6 +115,17 @@
                     <td>{{ order.orderNotes }}</td>
                     <td>{{ order.deliveryDate }}</td>
                     <td>{{ order.status }}</td>
+                    <td>
+                        <!-- Include the status update form -->
+                        <form method="post" action="{{ url_for('auth.update_order_status', order_id=order.orderID) }}">
+                            <select name="status">
+                                <option value="Preparing" {% if order.status == 'Preparing' %}selected{% endif %}>Preparing</option>
+                                <option value="Out for Delivery" {% if order.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
+                                <option value="Completed" {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                            </select>
+                            <button type="submit">Update Status</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -112,4 +134,37 @@
         <p>No orders found.</p>
     {% endif %}
 {% endif %}
+    <h2>Assign Delivery</h2>
+{% if supervise_orders %}
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Order Notes</th>
+                <th>Assign to Client</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in supervise_orders %}
+            <tr>
+                <td>{{ order.orderID }}</td>
+                <td>{{ order.orderDate }}</td>
+                <td>{{ order.orderNotes }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('auth.assign_delivery') }}">
+                        <input type="hidden" name="orderID" value="{{ order.orderID }}">
+                        <label for="clientUsername-{{ order.orderID }}">Client Username:</label>
+                        <input type="text" name="clientUsername" id="clientUsername-{{ order.orderID }}" required>
+                        <button type="submit">Assign Delivery</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No supervised orders found.</p>
+{% endif %}
+
 {% endblock %}

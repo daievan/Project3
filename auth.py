@@ -3,7 +3,9 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, current_app, jsonify, session
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-from .db import get_db
+
+from .db import get_popular_categories, user_can_update
+from .db import get_db, update_popularity
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 
 # User class for Flask-Login
@@ -201,6 +203,7 @@ def create_auth_blueprint(login_manager: LoginManager):
                 error = f"An error occurred: {e}"
 
         return render_template('auth/find_order_items.html', items_with_locations=items_with_locations, error=error)
+
     @bp.route('/accept_donation', methods=('GET', 'POST'))
     def accept_donation():
         if not current_user.is_authenticated or current_user.role != '1':  
@@ -322,6 +325,11 @@ def create_auth_blueprint(login_manager: LoginManager):
         if not current_user.is_authenticated or current_user.role != '1': 
             flash('Only staff members can add to orders.')
             return redirect(url_for('auth.index'))
+        # JMC: Call update_popularity()
+        if request.method == 'POST':
+            category = request.form['mainCategory']
+            subcategory = request.form['subCategory']
+            update_popularity(category, subcategory)
 
         db = get_db()
         cursor = db.cursor()
@@ -495,11 +503,11 @@ def create_auth_blueprint(login_manager: LoginManager):
             # Orders the user delivers
             cursor.execute(
                 """
-                SELECT o.orderID, o.orderDate, o.orderNotes
+                SELECT o.orderID, o.orderDate, o.orderNotes, d.status
                 FROM Ordered o
                 JOIN Delivered d ON o.orderID = d.orderID
-                WHERE d.userName = %s
-                """, 
+                WHERE o.supervisor = %s
+                """,
                 (user_name,)
             )
             deliver_orders = cursor.fetchall()
@@ -523,4 +531,95 @@ def create_auth_blueprint(login_manager: LoginManager):
             deliver_orders=deliver_orders,
             role=user_role
         )
+
+    @bp.route('/popular_categories', methods=['GET'])
+    def popular_categories():
+        categories = get_popular_categories()
+        return render_template(
+            'auth/popular_categories.html',
+            categories=categories
+        )
+
+    @bp.route('/update_order_status/<int:order_id>', methods=['POST'])
+    @login_required
+    def update_order_status(order_id):
+        db = get_db()
+        cursor = db.cursor()
+        role = current_user.role
+        username = current_user.username
+
+        # Check permissions for updating the status
+        if role == '1':  # Staff (Supervisor)
+            # Supervisor can edit orders they supervise
+            query = """
+            SELECT 1 FROM Ordered o
+            JOIN Delivered d ON o.orderID = d.orderID
+            WHERE o.orderID = %s AND o.supervisor = %s
+            """
+            permitted = cursor.execute(query, (order_id, username))
+            permitted = cursor.fetchone()
+        elif role == '2':  # Volunteer
+            # Volunteers can edit orders assigned to them in Delivered
+            query = "SELECT 1 FROM Delivered WHERE orderID = %s AND userName = %s"
+            permitted = cursor.execute(query, (order_id, username)).fetchone()
+        else:
+            flash("You are not authorized to update this order.")
+            return redirect(url_for('auth.my_orders'))
+
+        if not permitted:
+            flash("You are not authorized to update this order.")
+            return redirect(url_for('auth.my_orders'))
+
+        # Update the status in the Delivered table
+        status = request.form['status']
+        cursor.execute(
+            "UPDATE Delivered SET status = %s WHERE orderID = %s",
+            (status, order_id),
+        )
+        db.commit()
+        flash("Order status updated successfully!")
+        return redirect(url_for('auth.my_orders'))
+
+    @bp.route('/assign_delivery', methods=['POST'])
+    @login_required
+    def assign_delivery():
+        if current_user.role != '1':  # Only staff can assign deliveries
+            flash("You are not authorized to assign deliveries.")
+            return redirect(url_for('auth.my_orders'))
+
+        order_id = request.form['orderID']
+        client_username = request.form['clientUsername']  # Pass the client username from the form
+
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+
+        # Check if the order exists in the Ordered table and is supervised by the current user
+        cursor.execute(
+            "SELECT * FROM Ordered WHERE orderID = %s AND supervisor = %s",
+            (order_id, current_user.username),
+        )
+        order = cursor.fetchone()  # Fetch the result
+
+        if not order:
+            flash("Order not found or you are not authorized to assign it.")
+            return redirect(url_for('auth.my_orders'))
+
+        # Check if the order is already in the Delivered table
+        cursor.execute(
+            "SELECT * FROM Delivered WHERE orderID = %s", (order_id,)
+        )
+        existing_delivery = cursor.fetchone()  # Fetch the result
+
+        if existing_delivery:
+            flash("This order is already assigned to delivery.")
+            return redirect(url_for('auth.my_orders'))
+
+        # Add the order to the Delivered table under the client's username
+        cursor.execute(
+            "INSERT INTO Delivered (orderID, userName, status) VALUES (%s, %s, %s)",
+            (order_id, client_username, 'Preparing'),
+        )
+        db.commit()
+        flash(f"Order assigned to {client_username} for delivery successfully!")
+        return redirect(url_for('auth.my_orders'))
     return bp
