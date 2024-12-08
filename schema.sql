@@ -75,7 +75,6 @@ CREATE TABLE Act (
 CREATE TABLE Location (
     roomNum INT NOT NULL,
     shelfNum INT NOT NULL, 
-    shelf VARCHAR(20),
     shelfDescription VARCHAR(200),
     PRIMARY KEY (roomNum, shelfNum)
 );
@@ -175,11 +174,11 @@ INSERT INTO DonatedBy (ItemID, userName, donateDate) VALUES (101, 'asmith', '202
 INSERT INTO DonatedBy (ItemID, userName, donateDate) VALUES (102, 'asmith', '2023-12-11');
 INSERT INTO DonatedBy (ItemID, userName, donateDate) VALUES (103, 'jblack', '2023-12-15');
 
-INSERT INTO Location (roomNum, shelfNum, shelf, shelfDescription) VALUES (1, 1, 'A', 'Main storage area');
-INSERT INTO Location (roomNum, shelfNum, shelf, shelfDescription) VALUES (1, 2, 'B', 'Secondary storage');
-INSERT INTO Location (roomNum, shelfNum, shelf, shelfDescription) VALUES (2, 1, 'C', 'Kitchen storage shelf');
-INSERT INTO Location (roomNum, shelfNum, shelf, shelfDescription) VALUES (3, 1, 'D', 'Electronics room shelf');
-INSERT INTO Location (roomNum, shelfNum, shelf, shelfDescription) VALUES (20, 1, 'Holding', 'Holding location for delivery preparation');
+INSERT INTO Location (roomNum, shelfNum, shelfDescription) VALUES (1, 1, 'Main storage area');
+INSERT INTO Location (roomNum, shelfNum, shelfDescription) VALUES (1, 2, 'Secondary storage');
+INSERT INTO Location (roomNum, shelfNum, shelfDescription) VALUES (2, 1, 'Kitchen storage shelf');
+INSERT INTO Location (roomNum, shelfNum, shelfDescription) VALUES (3, 1, 'Electronics room shelf');
+INSERT INTO Location (roomNum, shelfNum, shelfDescription) VALUES (20, 1, 'Holding location for delivery preparation');
 
 INSERT INTO Piece (ItemID, pieceNum, pDescription, length, width, height, roomNum, shelfNum, pNotes) VALUES (101, 1, 'Dining table top', 200, 100, 75, 1, 1, 'Large wooden table');
 INSERT INTO Piece (ItemID, pieceNum, pDescription, length, width, height, roomNum, shelfNum, pNotes) VALUES (101, 2, 'Dining chair', 50, 50, 90, 1, 2, 'Comfortable chair');
