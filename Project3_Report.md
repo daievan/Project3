@@ -223,6 +223,17 @@ WHERE d.userName = %s;
 ```
 ### 9b.
 
+**Create Person Table**
+
+```sql
+CREATE TABLE Popularity (
+    category VARCHAR(255) NOT NULL,
+    subcategory VARCHAR(255) NOT NULL,
+    order_count INTEGER DEFAULT 0,
+    PRIMARY KEY (category, subcategory)
+);
+```
+
 **Insert or Update Popularity Count**
 
 ```sql
@@ -288,4 +299,4 @@ frameworks (Flask and MySQL), and code structuring abilities have improved signi
 
 ​	•	**Required Application Features**: Worked on features 1–4 before handing off to Dai for refactoring, restructuring, and editing.
 
-​	•	**Additional Features**: Worked on features 9b and 10.
+​	•	**Additional Features**: Worked on features 9b and 10 and created Popularity table within the schema to keep track of order counts within specific categories and subcategories.
