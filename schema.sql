@@ -143,6 +143,8 @@ INSERT INTO Role (roleID, rDescription) VALUES ('4', 'Donor');
 -- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('bwhite', 'mypassword', 'Bob', 'White', 'bwhite@nyu.edu');
 -- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('cgreen', 'adminpass', 'Cathy', 'Green', 'cgreen@nyu.edu');
 -- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('jblack', 'blackpass', 'Jack', 'Black', 'jblack@nyu.edu');
+-- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('admin1', 'adminPassword123', 'Jack', 'Black', 'jblack@nyu.edu');
+-- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('volunteer2', 'volunteerPassword123', 'Jack', 'Black', 'jblack@nyu.edu');
 
 INSERT INTO Person (userName, password, fname, lname, email) VALUES ('jdoe', 'scrypt:32768:8:1$Emw9ijaouAHok9Lr$98ca4b4dbafdad06e357763a428e062a7b42da012558f6ff6267a2032c9092ccfa0aaac15456ab132776da19d9a435cc1868038bc8458995707a89fc91155ab3', 'John', 'Doe', 'jdoe@nyu.edu');
 INSERT INTO Person (userName, password, fname, lname, email) VALUES ('asmith', 'scrypt:32768:8:1$ygQhFvjXjxEwsXDO$bfecc7147ad6e275b20ca75f6e404e2858abda27e08c49f13f352d74b54f311f7befa2c62e47d2da8527c57f6ba1b32b25ada8dc859d4706494ef04497082c06', 'Alice', 'Smith', 'asmith@nyu.edu');
