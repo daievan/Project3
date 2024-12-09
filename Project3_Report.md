@@ -14,7 +14,11 @@
 
 ​	•	Werkzeug (Password hashing)
 
-## 2.The main queries for each of the features
+## 2.Any additional constraints, triggers, stored procedures
+
+In this project, we adopt the following approach: even if an item does not have any separate pieces, its information will still be stored in the “Piece” table. This way, we can record its length, width, height, room number, and shelf number details consistently within the same structure.
+
+## 3.The main queries for each of the features
 
 ### 1.
 
@@ -274,7 +278,7 @@ SET status = %s
 WHERE orderID = %s;
 ```
 
-## 3.**Lessons Learned from the Project**
+## 4.**Lessons Learned from the Project**
 
 **Panzhu Dai:**
 
@@ -287,7 +291,7 @@ This project has reinforced the importance of planning and organization in softw
 My debugging skills were put to the test during this process, and I believe that I have made a noticeable improvement compared to previous projects, such as a very similar project I completed for a state government agency a few years ago. My understanding of role management in Flask, handling interactions between two different
 frameworks (Flask and MySQL), and code structuring abilities have improved significantly, and I am confident that I can apply these skills to future projects.
 
-## 4.**Contribution of Team Members**
+## 5.**Contribution of Team Members**
 
 **Panzhu Dai:**
 
