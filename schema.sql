@@ -143,32 +143,24 @@ INSERT INTO Role (roleID, rDescription) VALUES ('4', 'Donor');
 -- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('bwhite', 'mypassword', 'Bob', 'White', 'bwhite@nyu.edu');
 -- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('cgreen', 'adminpass', 'Cathy', 'Green', 'cgreen@nyu.edu');
 -- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('jblack', 'blackpass', 'Jack', 'Black', 'jblack@nyu.edu');
--- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('admin1', 'adminPassword123', 'Jack', 'Black', 'jblack@nyu.edu');
--- INSERT INTO Person (userName, password, fname, lname, email) VALUES ('volunteer2', 'volunteerPassword123', 'Jack', 'Black', 'jblack@nyu.edu');
 
 INSERT INTO Person (userName, password, fname, lname, email) VALUES ('jdoe', 'scrypt:32768:8:1$Emw9ijaouAHok9Lr$98ca4b4dbafdad06e357763a428e062a7b42da012558f6ff6267a2032c9092ccfa0aaac15456ab132776da19d9a435cc1868038bc8458995707a89fc91155ab3', 'John', 'Doe', 'jdoe@nyu.edu');
 INSERT INTO Person (userName, password, fname, lname, email) VALUES ('asmith', 'scrypt:32768:8:1$ygQhFvjXjxEwsXDO$bfecc7147ad6e275b20ca75f6e404e2858abda27e08c49f13f352d74b54f311f7befa2c62e47d2da8527c57f6ba1b32b25ada8dc859d4706494ef04497082c06', 'Alice', 'Smith', 'asmith@nyu.edu');
 INSERT INTO Person (userName, password, fname, lname, email) VALUES ('bwhite', 'scrypt:32768:8:1$ldImAWJ7vSMy7dI6$94221e817ee18213230f7ac133999c24b70c026708b7da383203ed15df4cfd602b06f7314bbce04e5de18a405220d1365716cdc60293d0c87b052749a1dfcf2a', 'Bob', 'White', 'bwhite@nyu.edu');
 INSERT INTO Person (userName, password, fname, lname, email) VALUES ('cgreen', 'scrypt:32768:8:1$fBXb2DhdgXHBJOX2$58f6a68e7b814600dab17f3a3b6b190326e2fc3c4e81ea3174da6ee4498a373d016a0226c01b29f5a65b431299432c3632aa0b0a969d6a17eb8115c0efe63397', 'Cathy', 'Green', 'cgreen@nyu.edu');
 INSERT INTO Person (userName, password, fname, lname, email) VALUES ('jblack', 'scrypt:32768:8:1$KO1aSH1pt8YSMBWt$1e4ae69af9735778ef70ccd354a4f990993449f468b0bd87e9842f8eda322a040b2ec32e389b681fcd5e8cface2eaa9fbd8a1d415abc0ca9027b1c77f9e347b4', 'Jack', 'Black', 'jblack@nyu.edu');
-INSERT INTO Person (userName, password, fname, lname, email) VALUES ('admin1', 'scrypt:32768:8:1$adminHash123$5e8dbb7f8ad0309e1ed830891f292b64d98ec918ff0ec0c5098f4d5b0b9fbe4f4a5b5c60b9436670fd0ec2b12d875f6c244d12db2d360b74e6c918e13e65d8ea', 'Admin', 'User', 'admin1@example.com');
-INSERT INTO Person (userName, password, fname, lname, email) VALUES ('volunteer2', 'scrypt:32768:8:1$volunteerHash123$e7bf2bde88f0111f5d7c9d6b96a75cb95e6c0b36509c9e66b4a82d3b22b0b8f45ec8a4a15d93962f403fbaf678e593cc45f8e8a4b6d31035f5d91809c7589d37', 'Volunteer', 'Two', 'volunteer2@example.com');
 
 INSERT INTO PersonPhone (userName, phone) VALUES ('jdoe', '123-456-7890');
 INSERT INTO PersonPhone (userName, phone) VALUES ('asmith', '987-654-3210');
 INSERT INTO PersonPhone (userName, phone) VALUES ('bwhite', '555-123-4567');
 INSERT INTO PersonPhone (userName, phone) VALUES ('cgreen', '555-765-4321');
 INSERT INTO PersonPhone (userName, phone) VALUES ('jblack', '666-987-1234');
-INSERT INTO PersonPhone (userName, phone) VALUES ('admin1', '111-111-1111');
-INSERT INTO PersonPhone (userName, phone) VALUES ('volunteer2', '222-222-2222');
 
 INSERT INTO Act (userName, roleID) VALUES ('jdoe', '3');
 INSERT INTO Act (userName, roleID) VALUES ('asmith', '4');
 INSERT INTO Act (userName, roleID) VALUES ('bwhite', '2');
 INSERT INTO Act (userName, roleID) VALUES ('cgreen', '1');
 INSERT INTO Act (userName, roleID) VALUES ('jblack', '4');
-INSERT INTO Act (userName, roleID) VALUES ('admin1', '1');
-INSERT INTO Act (userName, roleID) VALUES ('volunteer2', '2');
 
 INSERT INTO Category (mainCategory, subCategory, catNotes) VALUES ('Cookware', 'Frying Pan', 'Used in kitchens');
 INSERT INTO Category (mainCategory, subCategory, catNotes) VALUES ('Furniture', 'Dining Table', 'Dining room furniture');
